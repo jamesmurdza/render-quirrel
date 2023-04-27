@@ -1,0 +1,29 @@
+name: quirrel
+
+build:
+  image: ghcr.io/quirrel-dev/quirrel:main
+
+services:
+  - name: app
+    internalPort: 9181
+    protocol: tcp
+    concurrency:
+      hardLimit: 25
+      softLimit: 20
+      type: connections
+    healthCheck:
+      interval: 10s
+      path: /health
+      port: 80
+      protocol: http
+      timeout: 2s
+    ports:
+      - port: 80
+        protocol: tcp
+        handlers:
+          - http
+      - port: 443
+        protocol: tcp
+        handlers:
+          - http
+          - tls
